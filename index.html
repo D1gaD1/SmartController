@@ -1,16 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8" />
-  <link rel="icon" href="/favicon.ico" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Welcome to Vuetify 3</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            background-color: #f7f7f7;
+        }
+        .login-container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 5px;
+            width: 100%;
+            max-width: 400px;
+        }
+        .logo {
+            display: block;
+            margin: 0 auto 20px;
+            max-width: 150px;
+        }
+        .input-field {
+            display: block;
+            width: 100%;
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #e0e0e0;
+            border-radius: 3px;
+        }
+        .remember-me {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+        }
+        .remember-me input {
+            margin-right: 5px;
+        }
+        .login-button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            opacity: 0.9;
+            border-radius: 3px;
+            margin-top: 10px;
+        }
+    </style>
 </head>
-
 <body>
-  <div id="app"></div>
-  <script type="module" src="/src/main.ts"></script>
-</body>
+    <div class="login-container">
+        <img src="logo.png" alt="Logo" class="logo">
+        <form>
+          <input type="text" name="username" placeholder="Username" class="input-field" required>
+          <input type="password" name="password" placeholder="Password" class="input-field" required>
+  
+          <div class="remember-me">
+              <input type="checkbox" name="remember" id="remember">
+              <label for="remember">Remember me</label>
+          </div>
+  
+          <button type="submit" class="login-button" formaction="devicelist.html">Login</button>
+      </form>
+  </div>
 
+</body>
 </html>

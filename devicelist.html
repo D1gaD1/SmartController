@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Device List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f7f7f7;
+        }
+        .button {
+            padding: 10px 15px;
+            margin: 0 10px 20px 0;
+            border: none;
+            color: white;
+            background-color: #4CAF50;
+            cursor: pointer;
+        }
+        .device-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .device-list li {
+            padding: 10px;
+            background-color: #ffffff;
+            border: 1px solid #e0e0e0;
+            margin-bottom: 10px;
+        }
+        .device-name {
+            cursor: pointer;
+        }
+        .device-status {
+            float: right;
+        }
+    </style>
+</head>
+<body>
+    <button class="button" onclick="location.href='add_new_device.html'">Add New Device</button>
+    <button class="button" onclick="location.href='logs.html'">Logs</button>
+
+    <ul class="device-list">
+        <li>
+            <span class="device-name" onclick="location.href='device_control.html'">Device 1</span>
+            <span class="device-status">Connected</span>
+        </li>
+        <li>
+            <span class="device-name" onclick="location.href='device_control.html'">Device 2</span>
+            <span class="device-status">Disconnected</span>
+        </li>
+        <!-- Add more devices here -->
+    </ul>
+</body>
+</html>
