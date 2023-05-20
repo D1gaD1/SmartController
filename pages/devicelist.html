@@ -82,83 +82,87 @@
 <body>
     <div class="topnav">
         <a id="addDeviceBtn">Add New Device</a>
-        <a href="">Logs</a>
-        <a href="index.html">Log out</a>
-      </div>
+        <a href="/pages/logs.html" target="_blank">Logs</a>
+        <a href="/index.html">Log out</a>
+    </div>
 
-    <ul class="device-list">
-        <li>
-            <span class="device-name" onclick="location.href='devsetting.html'">Device 1</span>
-            <span class="device-status">Connected</span>
-        </li>
-        <li>
-            <span class="device-name" onclick="location.href='devsetting.html'">Device 2</span>
-            <span class="device-status">Disconnected</span>
-        </li>
-        <!-- Add more devices here -->
+    <ul id="connectedDeviceList" class="device-list">
+        <!-- Connected devices will be listed here by JavaScript -->
     </ul>
+
     <div id="myModal" class="modal">
         <!-- Modal content -->
         <div class="modal-content">
             <h2>Available Devices</h2>
-            <ul class="device-list">
-                <li>
-                    <span class="device-name">Device 1</span>
-                </li>
-                <li>
-                    <span class="device-name"> Device 2</span>
-                </li>
-                <!-- Add more available devices here -->
-            </ul>
-        </div>
-    </div>
-
-    <div id="devInfo" class="modal">
-        <!-- Modal content -->
-        <div class="modal-content">
-            <h2>Device Info</h2>
-            <ul class="device-list">
-                <li>
-                    <span class="device-name">Available Device 35</span>
-                </li>
-                <li>
-                    <span class="device-name">Available Device 2</span>
-                </li>
-                <!-- Add more available devices here -->
+            <ul id="availableDeviceList" class="device-list">
+                <!-- Available devices will be listed here by JavaScript -->
             </ul>
         </div>
     </div>
 
     <script>
-        // Get the modal
         var modal = document.getElementById("myModal");
-        var info = document.getElementById("devInfo");
-
-        // Get the button that opens the modal
         var btn = document.getElementById("addDeviceBtn");
-
-        // When the user clicks the button, open the modal 
+    
         btn.onclick = function() {
             modal.style.display = "block";
+            fetchAvailableDevices();
         }
-
-        // When the user clicks anywhere outside of the modal, close it
+    
         window.onclick = function(event) {
             if (event.target == modal) {
                 modal.style.display = "none";
             }
         }
+    
+        function fetchAvailableDevices() {
+        fetch('http://localhost:5000/getDeviceList')
+            .then(response => response.json())
+            .then(data => {
+                var availableDeviceList = document.getElementById('availableDeviceList');
+                availableDeviceList.innerHTML = '';
 
-        btn.onclick = function() {
-            info.style.display = "block";
-        }
+                data.forEach((device, index) => {
+                    var li = document.createElement('li');
+                    li.textContent = device;
+                    li.id = 'device-' + index;
+                    li.className = 'device-name';
+                    li.onclick = function() {
+                        addDeviceToList(device);
+                        saveDevice(device, li.id);
+                    }
+                    availableDeviceList.appendChild(li);
+                });
+            });
+    }
 
-        // When the user clicks anywhere outside of the modal, close it
-        window.onclick = function(event) {
-            if (event.target == info) {
-                info.style.display = "none";
-            }
-        }
+    function addDeviceToList(deviceName) {
+        var connectedDeviceList = document.getElementById('connectedDeviceList');
+        var li = document.createElement('li');
+        li.textContent = deviceName;
+        li.className = 'device-name';
+        connectedDeviceList.appendChild(li);
+    }
+
+    function saveDevice(deviceName, deviceId) {
+        fetch('http://localhost:5000/addDevice', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ deviceName: deviceName })
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            removeDeviceFromAvailableList(deviceId);
+        });
+    }
+
+    function removeDeviceFromAvailableList(deviceId) {
+        var deviceElement = document.getElementById(deviceId);
+        deviceElement.remove();
+    }
     </script>
 </body>
 </html>
