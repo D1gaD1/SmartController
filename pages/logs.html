@@ -12,7 +12,10 @@
 
     <script>
         window.onload = function() {
-            fetch('http://127.0.0.1:5000/getLogs')
+            fetch('http://127.0.0.1:5000/getLogs', {
+                method: 'GET',
+                credentials: 'include'
+            })
                 .then(response => response.json())
                 .then(data => {
                     var logList = document.getElementById('logList');

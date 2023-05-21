@@ -116,7 +116,10 @@
         }
     
         function fetchAvailableDevices() {
-        fetch('http://localhost:5000/getDeviceList')
+            fetch('http://localhost:5000/getDeviceList', {
+                method: 'GET',
+                credentials: 'include'
+            })
             .then(response => response.json())
             .then(data => {
                 var availableDeviceList = document.getElementById('availableDeviceList');
@@ -134,35 +137,36 @@
                     availableDeviceList.appendChild(li);
                 });
             });
-    }
+        }
 
-    function addDeviceToList(deviceName) {
-        var connectedDeviceList = document.getElementById('connectedDeviceList');
-        var li = document.createElement('li');
-        li.textContent = deviceName;
-        li.className = 'device-name';
-        connectedDeviceList.appendChild(li);
-    }
+        function addDeviceToList(deviceName) {
+            var connectedDeviceList = document.getElementById('connectedDeviceList');
+            var li = document.createElement('li');
+            li.textContent = deviceName;
+            li.className = 'device-name';
+            connectedDeviceList.appendChild(li);
+        }
 
-    function saveDevice(deviceName, deviceId) {
-        fetch('http://localhost:5000/addDevice', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ deviceName: deviceName })
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log(data);
-            removeDeviceFromAvailableList(deviceId);
-        });
-    }
+        function saveDevice(deviceName, deviceId) {
+            fetch('http://localhost:5000/addDevice', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ deviceName: deviceName }),
+                credentials: 'include'
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                removeDeviceFromAvailableList(deviceId);
+            });
+        }
 
-    function removeDeviceFromAvailableList(deviceId) {
-        var deviceElement = document.getElementById(deviceId);
-        deviceElement.remove();
-    }
+        function removeDeviceFromAvailableList(deviceId) {
+            var deviceElement = document.getElementById(deviceId);
+            deviceElement.remove();
+        }
     </script>
 </body>
 </html>
