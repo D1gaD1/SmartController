@@ -5,14 +5,15 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
+    "start": "node server.js",
     "preview": "vite preview",
     "lint": "eslint . --fix --ignore-path .gitignore"
   },
+
   "dependencies": {
     "@mdi/font": "7.0.96",
     "core-js": "^3.29.0",
     "roboto-fontface": "*",
-    "serve": "^14.2.0",
     "vue": "^3.2.0",
     "vue-router": "^4.0.0",
     "vuetify": "^3.0.0",
@@ -22,7 +23,7 @@
     "@babel/types": "^7.21.4",
     "@types/node": "^18.15.0",
     "@types/webfontloader": "^1.6.35",
-    "@vitejs/plugin-vue": "^4.2.3",
+    "@vitejs/plugin-vue": "^3.0.3",
     "@vue/eslint-config-typescript": "^11.0.0",
     "eslint": "^8.22.0",
     "eslint-plugin-vue": "^9.3.0",
