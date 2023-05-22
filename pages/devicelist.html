@@ -116,7 +116,7 @@
         }
     
         function fetchAvailableDevices() {
-            fetch('http://localhost:5000/getDeviceList', {
+            fetch('https://controllerbackend.herokuapp.com/backend/login.py', {
                 method: 'GET',
                 credentials: 'include'
             })
@@ -148,7 +148,7 @@
         }
 
         function saveDevice(deviceName, deviceId) {
-            fetch('http://localhost:5000/addDevice', {
+            fetch('https://controllerbackend.herokuapp.com/backend/login.py', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
