@@ -1,2 +1,3 @@
-web: gunicorn login:app
+web: python backend/login.py
+
 
