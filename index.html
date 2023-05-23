@@ -10,6 +10,7 @@
             margin: 0;
             padding: 0;
             background: #2f2838;
+            height:100%;
         }
 
         #sidebar {
@@ -34,6 +35,7 @@
             margin-right: 15%;
             padding: 30%;
             background-color: #000000;
+            height:100%;
         }
 
         button {
@@ -146,7 +148,7 @@
                 let username = document.getElementById('username').value;
                 let password = document.getElementById('password').value;
             
-            fetch('http://127.0.0.1:5000/login', {
+            fetch('https://controllerbackend.herokuapp.com/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -159,7 +161,7 @@
             .then(response => response.json())
             .then(data => {
                 if(data.status === 'success') {
-                    window.location.href = "/pages/devicelist.html"
+                    alert('Logged in');
                     // Here you can redirect to another page or save the login state
                 } else {
                     document.getElementById('error-message').innerText = 'Error: ' + data.message;
