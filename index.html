@@ -94,7 +94,7 @@
                 .then(response => response.json())
                 .then(data => {
                     if(data.status === 'success') {
-                        window.location.href = "https://lcmsmartcontroller.herokuapp.com/pages/devicelist.html";
+                        window.location.href = "https://controllerbackend.herokuapp.com/pages/devicelist.html";
                         // Here you can redirect to another page or save the login state
                     } else {
                         document.getElementById('error-message').innerText = 'Error: ' + data.message;
