@@ -73,39 +73,39 @@
       <div id="error-message" style="color: red; margin-top: 10px;"></div>
     </div>
     <script>
-    document.addEventListener('DOMContentLoaded', (event) => {
-        document.getElementById('login-form').addEventListener('submit', function(event) {
-            event.preventDefault();
-
-            let username = document.getElementById('username').value;
-            let password = document.getElementById('password').value;
+        document.addEventListener('DOMContentLoaded', (event) => {
+            document.getElementById('login-form').addEventListener('submit', function(event) {
+                event.preventDefault();
         
-            fetch('https://controllerbackend.herokuapp.com/login.py', {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-        username: username,
-        password: password
-    }),
-    credentials: 'include'  // include credentials in the request
-})
-
-        .then(response => response.json())
-        .then(data => {
-            if(data.status === 'success') {
-                window.location.href = "/pages/devicelist.html"
-                // Here you can redirect to another page or save the login state
-            } else {
-                document.getElementById('error-message').innerText = 'Error: ' + data.message;
-            }
-        })
-        .catch((error) => {
-            console.error('Error:', error);
+                let username = document.getElementById('username').value;
+                let password = document.getElementById('password').value;
+            
+                fetch('https://controllerbackend.herokuapp.com/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        username: username,
+                        password: password
+                    }),
+                    credentials: 'include'  // include credentials in the request
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if(data.status === 'success') {
+                        window.location.href = "https://lcmsmartcontroller.herokuapp.com/pages/devicelist.html";
+                        // Here you can redirect to another page or save the login state
+                    } else {
+                        document.getElementById('error-message').innerText = 'Error: ' + data.message;
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+            });
         });
-    });
-    });
-    </script>
+        </script>
+        
 </body>
 </html>
