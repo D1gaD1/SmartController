@@ -14,16 +14,18 @@
         }
 
         #sidebar {
-            position: absolute;
+            position: fixed;
             left: -250px;
             transition: left 0.5s;
-            height: 100%;
+            height: 100vh;
             width: 250px;
             background-color: #000000;
             color: #fff;
             padding: 15px;
             display: flex;
             flex-direction: column;
+            overflow-y: auto;
+            z-index: 2;
         }
 
         #sidebar.show {
@@ -31,11 +33,15 @@
         }
 
         #main-content {
-            margin-left: 15%;
-            margin-right: 15%;
-            padding: 30%;
+            position: absolute;
+            left: 15%;
+            right: 15%;
+            top: 0;
+            bottom: 0;
+            padding: 15%;
             background-color: #000000;
-            height:100%;
+            overflow-y: auto;
+            z-index: 1;
         }
 
         button {
@@ -51,16 +57,21 @@
         }
 
         button#toggle-sidebar {
-            position: absolute;
+            position: fixed;
             top: 10px;
-            right: -50px;
+            left: 25px; /* set button on the left side when sidebar is closed */
             width: 50px;
-            height: 10%;
+            height: 50px;
             color: #007BFF;
             background: #000000;
             font-size:200%;
             border-radius: 0px 25px 25px 0px;
+            z-index: 100;
+            transition: left 0.5s; /* Match the transition time with the sidebar */
         }
+
+
+
 
         button:hover {
             background: #0056b3;
@@ -112,33 +123,42 @@
             margin-top: 10px;
         }
 
+        #sidebar.show button#toggle-sidebar {
+            left: 275px;  /* set button on the left side when sidebar is opened */
+        }
+
+
     </style>
 </head>
 <body>
-    <div id="sidebar">
-        <button id="toggle-sidebar">≡</button>
-        <button id="login">Log In</button>
-        <div id="login-window">
-            <input type="text" id="username" placeholder="Username" required/>
-            <input type="password" id="password" placeholder="Password" required/>
-            <button type="submit" class="login-button">Confirm</button>
-            <div id="error-message" style="color: red; margin-top: 10px;"></div>
+    <body>
+        <div id="sidebar">
+            <button id="toggle-sidebar">≡</button> <!-- Moved outside of the sidebar -->
+            <button id="login">Log In</button>
+            <div id="login-window">
+                <input type="text" id="username" placeholder="Username" required/>
+                <input type="password" id="password" placeholder="Password" required/>
+                <button type="submit" class="login-button">Confirm</button>
+                <div id="error-message" style="color: red; margin-top: 10px;"></div>
+            </div>
+            <button id="controller">Controller</button>
+            <div id="controller-window">
+                <ul id="devices-list"></ul>
+            </div>
+            <button id="logs">Logs</button>
+            <div id="logs-window">
+                <textarea id="logs-area" readonly></textarea>
+            </div>
         </div>
-        <button id="controller">Controller</button>
-        <div id="controller-window">
-            <ul id="devices-list"></ul>
+        
+        <div id="main-content">
+            <div id="device-window">
+    
+            </div>
+            <!-- List goes here -->
         </div>
-        <button id="logs">Logs</button>
-        <div id="logs-window">
-            <textarea id="logs-area" readonly></textarea>
-        </div>
-    </div>
-    <div id="main-content">
-        <div id="device-window">
-
-        </div>
-        <!-- List goes here -->
-    </div>
+    </body>
+    
     <script src="index.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', (event) => {
@@ -147,31 +167,32 @@
     
                 let username = document.getElementById('username').value;
                 let password = document.getElementById('password').value;
-            
-            fetch('https://controllerbackend.herokuapp.com/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    username: username,
-                    password: password
+    
+                fetch('https://controllerbackend.herokuapp.com/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        username: username,
+                        password: password
+                    })
                 })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if(data.status === 'success') {
-                    alert('Logged in');
-                    // Here you can redirect to another page or save the login state
-                } else {
-                    document.getElementById('error-message').innerText = 'Error: ' + data.message;
-                }
-            })
-            .catch((error) => {
-                console.error('Error:', error);
+                .then(response => response.json())
+                .then(data => {
+                    if(data.status === 'success') {
+                        alert('Logged in');
+                        // Here you can redirect to another page or save the login state
+                    } else {
+                        document.getElementById('error-message').innerText = 'Error: ' + data.message;
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
             });
         });
-        });
-        </script>
+    </script>
+    
 </body>
 </html>
