@@ -3,30 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Page</title>
+    <title>Vite App</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
             margin: 0;
             padding: 0;
-            background-color: #f7f7f7;
+            background: #2f2838;
         }
-        .login-container {
-            background-color: #ffffff;
-            padding: 20px;
+
+        #sidebar {
+            position: absolute;
+            left: -250px;
+            transition: left 0.5s;
+            height: 100%;
+            width: 250px;
+            background-color: #000000;
+            color: #fff;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #sidebar.show {
+            left: 0;
+        }
+
+        #main-content {
+            margin-left: 15%;
+            margin-right: 15%;
+            padding: 30%;
+            background-color: #000000;
+        }
+
+        button {
+            margin-top: 20px;
+            margin-bottom: 10px;
+            padding: 10px;
+            border: none;
+            color: #fff;
+            background: #007BFF;
+            cursor: pointer;
             border-radius: 5px;
-            width: 100%;
-            max-width: 400px;
+
         }
-        .logo {
-            display: block;
-            margin: 0 auto 20px;
-            max-width: 150px;
+
+        button#toggle-sidebar {
+            position: absolute;
+            top: 10px;
+            right: -50px;
+            width: 50px;
+            height: 10%;
+            color: #007BFF;
+            background: #000000;
+            font-size:200%;
+            border-radius: 0px 25px 25px 0px;
         }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        input {
+            margin-bottom: 10px;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            width: 90%;
+        }
+
         .input-field {
             display: block;
             width: 100%;
@@ -35,14 +80,24 @@
             border: 1px solid #e0e0e0;
             border-radius: 3px;
         }
-        .remember-me {
-            display: flex;
-            align-items: center;
-            margin: 10px 0;
+
+        #login-window, #controller-window, #logs-window, #device-window {
+            margin-top: 10px;
+            background: #f0f0f0;
+            padding: 10px;
+            border-radius: 5px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out;
         }
-        .remember-me input {
-            margin-right: 5px;
+
+        #logs-area {
+            width: 90%;
+            height: 150px;
+            border-radius: 5px;
+            padding: 10px;
         }
+
         .login-button {
             background-color: #4CAF50;
             color: white;
@@ -54,58 +109,67 @@
             border-radius: 3px;
             margin-top: 10px;
         }
+
     </style>
 </head>
 <body>
-    <div class="login-container">
-        <img src="logo.png" alt="Logo" class="logo">
-        <form id="login-form">
-          <input type="text" id="username" name="username" placeholder="Username" class="input-field" required>
-          <input type="password" id="password" name="password" placeholder="Password" class="input-field" required>
-  
-          <div class="remember-me">
-              <input type="checkbox" name="remember" id="remember">
-              <label for="remember">Remember me</label>
-          </div>
-  
-          <button type="submit" class="login-button">Login</button>
-      </form>
-      <div id="error-message" style="color: red; margin-top: 10px;"></div>
+    <div id="sidebar">
+        <button id="toggle-sidebar">≡</button>
+        <button id="login">Log In</button>
+        <div id="login-window">
+            <input type="text" id="username" placeholder="Username" required/>
+            <input type="password" id="password" placeholder="Password" required/>
+            <button type="submit" class="login-button">Confirm</button>
+            <div id="error-message" style="color: red; margin-top: 10px;"></div>
+        </div>
+        <button id="controller">Controller</button>
+        <div id="controller-window">
+            <ul id="devices-list"></ul>
+        </div>
+        <button id="logs">Logs</button>
+        <div id="logs-window">
+            <textarea id="logs-area" readonly></textarea>
+        </div>
     </div>
+    <div id="main-content">
+        <div id="device-window">
+
+        </div>
+        <!-- List goes here -->
+    </div>
+    <script src="index.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', (event) => {
             document.getElementById('login-form').addEventListener('submit', function(event) {
                 event.preventDefault();
-        
+    
                 let username = document.getElementById('username').value;
                 let password = document.getElementById('password').value;
             
-                fetch('https://controllerbackend.herokuapp.com/login', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        username: username,
-                        password: password
-                    }),
-                    credentials: 'include'  // include credentials in the request
+            fetch('http://127.0.0.1:5000/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    username: username,
+                    password: password
                 })
-                .then(response => response.json())
-                .then(data => {
-                    if(data.status === 'success') {
-                        window.location.href = "https://lcmsmartcontroller.herokuapp.com/pages/devicelist.html";
-                        // Here you can redirect to another page or save the login state
-                    } else {
-                        document.getElementById('error-message').innerText = 'Error: ' + data.message;
-                    }
-                })
-                .catch((error) => {
-                    console.error('Error:', error);
-                });
+            })
+            .then(response => response.json())
+            .then(data => {
+                if(data.status === 'success') {
+                    window.location.href = "/pages/devicelist.html"
+                    // Here you can redirect to another page or save the login state
+                } else {
+                    document.getElementById('error-message').innerText = 'Error: ' + data.message;
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
             });
         });
+        });
         </script>
-        
 </body>
 </html>
