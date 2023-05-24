@@ -4,6 +4,7 @@ const serveStatic = require('serve-static');
 
 const app = express();
 app.use(serveStatic(path.join(__dirname, 'dist'))); // Serve static files from 'dist' directory
+app.use(serveStatic(path.join(__dirname, 'public'))); // Serve static files from 'public' directory
 
 const port = process.env.PORT || 5000; // Listen on the appropriate port
 app.listen(port, () => {
